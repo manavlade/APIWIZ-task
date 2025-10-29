@@ -1,20 +1,19 @@
 import React from "react";
-import Home from "./components/Home";
 import './App.css'
-import { ThemeProvider } from "./components/theme-provider";
-import { ModeToggle } from "./components/mode-toggle";
+import { Toaster } from "react-hot-toast";
+import JSONTreeVisualizer from "./components/TreeGenerator";
+import { ReactFlowProvider } from "@xyflow/react";
 
 function App() {
 
   return (
-    <>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div>
-          <Home />
-          <ModeToggle/>
-        </div>
-      </ThemeProvider>
-    </>
+    <div>
+      <Toaster />
+      <ReactFlowProvider>
+        <JSONTreeVisualizer />
+      </ReactFlowProvider>
+    </div>
+
   )
 }
 
