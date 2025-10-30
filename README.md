@@ -12,7 +12,7 @@ It also integrates with **Google Gemini API** to automatically create structured
 - 📋 **Copy JSON Path** — Click any node to copy its exact JSON path.
 - 🖼️ **Download Tree as Image** — Export your visualized JSON tree as a high-quality image.
 - 💬 **Dialog-Based Prompt Input** — Generate JSON structures through a clean, modal-based interface.
-- ⚡ **Built with React + Tailwind CSS + shadcn/ui + Framer Motion** — Ensures smooth UI/UX with modern design and transitions.
+- ⚡ **Built with React + Tailwind CSS + shadcn/ui** — Ensures smooth UI/UX with modern design and transitions.
 
 ---
 
@@ -22,12 +22,8 @@ It also integrates with **Google Gemini API** to automatically create structured
 |-----------|-------------|
 | **Frontend Framework** | React.js |
 | **Styling** | Tailwind CSS, shadcn/ui |
-| **Animation** | Framer Motion |
 | **AI Integration** | Google Gemini API (`@google/genai`) |
 | **State Management** | React Hooks |
 | **Utilities** | html2canvas, react-hot-toast |
 
 ---
-
-## 📁 Folder Structure
-
