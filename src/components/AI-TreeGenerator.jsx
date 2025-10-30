@@ -78,13 +78,16 @@ const GeminiPromptBox = ({ onJsonGenerated }) => {
                             </Button>
                         </DialogClose>
 
-                        <Button
-                            onClick={handleGenerate}
-                            disabled={loading}
-                            className="bg-gradient-to-r from-[#B6995A] to-[#8C7A4E] text-white font-medium hover:opacity-90"
-                        >
-                            {loading ? "Generating..." : "Generate JSON 🌟"}
-                        </Button>
+
+                        <DialogClose asChild>
+                            <Button
+                                onClick={handleGenerate}
+                                disabled={loading}
+                                className="bg-gradient-to-r from-[#B6995A] to-[#8C7A4E] text-white font-medium hover:opacity-90"
+                            >
+                                {loading ? "Generating..." : "Generate JSON 🌟"}
+                            </Button>
+                        </DialogClose>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

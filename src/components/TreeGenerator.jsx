@@ -1,4 +1,3 @@
-// JSONTreeVisualizer.jsx
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   ReactFlow,
@@ -8,17 +7,14 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Textarea } from "./ui/textarea"; // keep your textarea component
+import { Textarea } from "./ui/textarea";
 import toast from "react-hot-toast";
 import useDebounce from "@/hooks/useDebounce";
 import { toPng } from 'html-to-image';
 import { Button } from "./ui/button";
 import GeminiPromptBox from "./AI-TreeGenerator";
 
-/**
- * Inner component — must be rendered inside ReactFlowProvider
- * so that useReactFlow() works without the zustand error.
- */
+
 function JSONTreeVisualizerInner() {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
@@ -72,11 +68,16 @@ function JSONTreeVisualizerInner() {
       let childY = y + 120;
 
       for (const [key, value] of entries) {
+        const newPath = Array.isArray(data)
+          ? `${path}[${key}]`
+          : `${path}.${key}`;
+
         const { nodes: childNodes, edges: childEdges } = buildTree(
           value,
           `${nodeId}-${key}`,
           depth + 1,
-          childY
+          childY,
+          newPath
         );
 
         edgesAcc.push({
@@ -137,10 +138,24 @@ function JSONTreeVisualizerInner() {
   };
 
   useEffect(() => {
-    if (!debouncedSearch || !nodes.length) return;
+    if (!nodes.length) return;
+
+    if (!debouncedSearch.trim()) {
+      setNodes((nds) =>
+        nds.map((n) => ({
+          ...n,
+          style: {
+            ...n.style,
+            border: "2px solid rgba(255,255,255,0.12)",
+            boxShadow: n.style?.boxShadow,
+          },
+        }))
+      );
+      fitView({ padding: 0.2 });
+      return;
+    }
 
     const q = debouncedSearch.toLowerCase().trim();
-
     const matches = nodes.filter((n) => {
       const label = (n.data?.label ?? "").toString().toLowerCase();
       const value = (n.data?.value ?? "").toString().toLowerCase();
@@ -148,10 +163,24 @@ function JSONTreeVisualizerInner() {
     });
 
     if (matches.length === 0) {
+      toast.dismiss("no-match");
+      toast.error("No matches found", { id: "no-match", duration: 1500 });
 
-      setNodes((nds) => nds.map((n) => ({ ...n, style: { ...n.style, border: "2px solid rgba(255,255,255,0.12)", boxShadow: n.style?.boxShadow } })));
+      setNodes((nds) =>
+        nds.map((n) => ({
+          ...n,
+          style: {
+            ...n.style,
+            border: "2px solid rgba(255,255,255,0.12)",
+            boxShadow: n.style?.boxShadow,
+          },
+        }))
+      );
+
+      fitView({ padding: 0.2 });
       return;
     }
+
 
     setNodes((nds) =>
       nds.map((n) => {
@@ -171,6 +200,7 @@ function JSONTreeVisualizerInner() {
     setCenter(first.position.x, first.position.y, { zoom: 1.4, duration: 600 });
   }, [debouncedSearch, nodes, setCenter]);
 
+
   const handleDownloadImage = async () => {
     const reactFlowElement = reactFlowWrapper.current?.querySelector('.react-flow');
 
@@ -179,7 +209,7 @@ function JSONTreeVisualizerInner() {
     try {
       const dataUrl = await toPng(reactFlowElement, {
         backgroundColor: '#0b1220',
-        pixelRatio: 3, // for high-quality export
+        pixelRatio: 3,
         cacheBust: true,
         width: reactFlowElement.scrollWidth,
         height: reactFlowElement.scrollHeight,
