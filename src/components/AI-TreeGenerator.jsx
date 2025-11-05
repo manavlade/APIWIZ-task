@@ -47,7 +47,7 @@ const GeminiPromptBox = ({ onJsonGenerated }) => {
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button>Generate With AI ⭐</Button>
+                    <Button>Generate With AI 👑</Button>
                 </DialogTrigger>
 
                 <DialogContent className="sm:max-w-[550px] bg-[#0b0b0b] text-white border border-gray-700 rounded-2xl">
