@@ -72,21 +72,21 @@ const Flow = () => {
   };
 
   return (
-    <div className="flex w-full h-[calc(100vh-3.5rem)] bg-gradient-to-br from-background to-muted">
+    <div className="flex flex-col lg:flex-row w-full h-[calc(100vh-3.5rem)] bg-gradient-to-br from-background to-muted transition-all">
       {/* Sidebar */}
-      <aside className="w-[26%] min-w-[300px] border-r bg-card/80 backdrop-blur-xl p-6 flex flex-col gap-5 shadow-xl">
+      <aside className="w-full lg:w-[26%] min-w-[280px] border-b lg:border-b-0 lg:border-r bg-card/80 backdrop-blur-xl p-4 md:p-6 flex flex-col gap-5 shadow-xl">
         <div>
-          <h2 className="font-semibold text-xl text-foreground mb-3 flex items-center gap-2">
+          <h2 className="font-semibold text-lg md:text-xl text-foreground mb-3 flex items-center gap-2">
             🧩 JSON Input
           </h2>
 
           <textarea
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
-            className="w-full h-64 p-3 bg-muted/50 text-foreground border border-border rounded-xl font-mono text-sm resize-none focus:ring-2 focus:ring-primary focus:outline-none"
+            className="w-full h-52 md:h-64 p-2 md:p-3 bg-muted/50 text-foreground border border-border rounded-xl font-mono text-sm resize-none focus:ring-2 focus:ring-primary focus:outline-none"
           />
 
-          <div className="flex gap-3 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <Button
               onClick={handleGenerate}
               className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md hover:opacity-90"
@@ -108,7 +108,8 @@ const Flow = () => {
         </div>
       </aside>
 
-      <main className="flex-1 relative" ref={flowRef}>
+      {/* Flow Area */}
+      <main className="flex-1 relative min-h-[60vh] lg:min-h-full" ref={flowRef}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -126,15 +127,8 @@ const Flow = () => {
           </Panel>
 
           <Background className="opacity-70" />
-          <Controls
-            className="dark:!bg-gray-800 dark:!text-white dark:!border-gray-600"
-            style={{
-              background: "rgba(255,255,255,0.9)",
-              borderRadius: 10,
-              boxShadow: "0 0 10px rgba(0,0,0,0.15)",
-            }}
-          />
-          <MiniMap
+         <div className="hidden md:flex">
+         <Controls
             nodeStrokeColor={(n) =>
               n.style?.background ? n.style.background : "#999"
             }
@@ -143,6 +137,18 @@ const Flow = () => {
             }
             className="dark:invert"
           />
+         </div>
+       <div className="hidden md:flex">
+       <MiniMap
+            nodeStrokeColor={(n) =>
+              n.style?.background ? n.style.background : "#999"
+            }
+            nodeColor={(n) =>
+              n.style?.background ? n.style.background : "#fff"
+            }
+            className="dark:invert"
+          />
+       </div>
         </ReactFlow>
       </main>
     </div>
